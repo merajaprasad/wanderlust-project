@@ -1,0 +1,83 @@
+@Library('Shared') _
+pipeline {
+    agent any
+
+    environment {
+        SCANNER_HOME= tool 'sonar-scanner'
+        DOCKER_USR = 'merajaprasd'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }
+    parameters{
+      string(name: 'FRONTEND_IMAGE_TAG', defaultValue: '', description: 'tagging frontend docker image')
+      string(name: 'BACKEND_IMAGE_TAG', defaultValue: '', description: 'tagging backend docker image')
+    }
+
+    stages{
+        stage('Workspace Cleanup') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Git: Code Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/merajaprasad/wanderlust-project.git'
+            }
+        }
+
+        stage('Trivy: Filesystem scan') {
+            steps {
+                trivy_fs_scan()
+            }
+        }
+
+        stage('OWASP: DP-Check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --format XML ', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage('SonarQube: Code Analysis') {
+            steps {
+               sonarqube_code_analysis("sonar-server","wonderlust","wonderlust")
+            }
+        }
+
+        stage('SonarQube: Code Quality Gates') {
+            steps {
+                script {
+                    sonarqube_quality_gate()
+                }               
+            }
+        }
+
+        stage('Docker: Build and Tag') {
+            steps {
+                dir('frontend') {
+                    docker_image_build("${DOCKER_USR}","wonderlust-front","${params.FRONTEND_IMAGE_TAG}")
+                }
+                dir('backend') {
+                    docker_image_build("${DOCKER_USR}","wonderlust-back","${params.BACKEND_IMAGE_TAG}")
+                }                
+            }
+        }
+
+        stage('Trivy: Image Scan') {
+            steps {
+                trivy_image_scan("${DOCKER_USR}","wonderlust-front","${params.FRONTEND_IMAGE_TAG}")
+                trivy_image_scan("${DOCKER_USR}","wonderlust-back","${params.BACKEND_IMAGE_TAG}")
+            }
+        }
+
+        stage('Docker: Push Image') {
+            steps {
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                sh "docker push ${DOCKER_USR}/wonderlust-front:${params.FRONTEND_IMAGE_TAG}"
+                sh "docker push ${DOCKER_USR}/wonderlust-back:${params.BACKEND_IMAGE_TAG}"
+            }
+        }
+    }
+}
+
+
