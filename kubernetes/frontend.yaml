@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: merajaprasd/wonderlust-front:2.1
+          image: merajaprasd/wonderlust-front:latest
           ports:
             - containerPort: 5173
 ---
