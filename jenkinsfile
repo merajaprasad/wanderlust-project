@@ -77,6 +77,84 @@ pipeline {
                 sh "docker push ${DOCKER_USR}/wonderlust-back:${params.BACKEND_IMAGE_TAG}"
             }
         }
+        
+        stage('Kubernetes: Updating Manifest file') {
+            steps {
+                script {
+                    dir('kubernetes') {
+                        sh """
+                            sed -i "s/wonderlust-front:*/wonderlust-front:${params.FRONTEND_IMAGE_TAG}/" frontend.yaml
+                            sed -i "s/wonderlust-back:*/wonderlust-back:${params.BACKEND_IMAGE_TAG}/" backend.yaml
+                        """
+                    }
+                }
+            }
+        }
+        stage('Git: Push to Github') {
+            steps {
+                script {
+                    withCredentials([gitUsernamePassword(credentialsId: 'github-cred', gitToolName: 'Default')]) {
+                        sh """
+                            git config --global user.name "merajaprasad"
+                            git config --global user.email "prasad.rp731@gmail.com"
+
+                            git add .
+                            git commit -m "updating image tag in deploymentfile"
+                            git push https://github.com/merajaprasad/wanderlust-project.git main
+                        """
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                emailext attachLog: true,
+                from: 'rajaprasad.rp731@gmail.com',
+                subject: "Wanderlust Application has been updated and deployed - '${currentBuild.result}'",
+                body: """
+                    <html>
+                    <body>
+                        <div style="background-color: #FFA07A; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Project: ${env.JOB_NAME}</p>
+                        </div>
+                        <div style="background-color: #90EE90; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Build Number: ${env.BUILD_NUMBER}</p>
+                        </div>
+                        <div style="background-color: #87CEEB; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">URL: ${env.BUILD_URL}</p>
+                        </div>
+                    </body>
+                    </html>
+                """,
+                to: 'rajaprasad.rp731@gmail.com',
+                attachmentsPattern: 'fs.html,image.html',
+                mimeType: 'text/html'
+            }
+        }
+        failure {
+            script {
+                emailext attachLog: true,
+                from: 'rajaprasad.rp731@gmail.com',
+                subject: "Wanderlust Application build failed - '${currentBuild.result}'",
+                body: """
+                    <html>
+                    <body>
+                        <div style="background-color: #FFA07A; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Project: ${env.JOB_NAME}</p>
+                        </div>
+                        <div style="background-color: #90EE90; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Build Number: ${env.BUILD_NUMBER}</p>
+                        </div>
+                    </body>
+                    </html>
+                """,
+                to: 'rajaprasad.rp731@gmail.com',
+                attachmentsPattern: 'fs.html,image.html',
+                mimeType: 'text/html'
+            }
+        }
     }
 }
 
