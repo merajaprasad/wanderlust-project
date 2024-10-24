@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: merajaprasd/wonderlust-back:oldestlatest
+          image: merajaprasd/wonderlust-back:2.1
           ports:
             - containerPort: 8080
 ---
