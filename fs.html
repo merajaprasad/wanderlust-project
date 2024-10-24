@@ -1,0 +1,83 @@
+
+For OSS Maintainers: VEX Notice
+--------------------------------
+If you're an OSS maintainer and Trivy has detected vulnerabilities in your project that you believe are not actually exploitable, consider issuing a VEX (Vulnerability Exploitability eXchange) statement.
+VEX allows you to communicate the actual status of vulnerabilities in your project, improving security transparency and reducing false positives for your users.
+Learn more and start using VEX: https://aquasecurity.github.io/trivy/v0.56/docs/supply-chain/vex/repo#publishing-vex-documents
+
+To disable this notice, set the TRIVY_DISABLE_VEX_NOTICE environment variable.
+
+
+backend/package-lock.json (npm)
+===============================
+Total: 12 (UNKNOWN: 0, LOW: 3, MEDIUM: 4, HIGH: 5, CRITICAL: 0)
+
+┌────────────────┬────────────────┬──────────┬──────────┬───────────────────┬────────────────────────────────────┬──────────────────────────────────────────────────────────────┐
+│    Library     │ Vulnerability  │ Severity │  Status  │ Installed Version │           Fixed Version            │                            Title                             │
+├────────────────┼────────────────┼──────────┼──────────┼───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ axios          │ CVE-2024-39338 │ HIGH     │ fixed    │ 1.6.8             │ 1.7.4                              │ axios: axios: Server-Side Request Forgery                    │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-39338                   │
+├────────────────┼────────────────┤          │          ├───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ body-parser    │ CVE-2024-45590 │          │          │ 1.20.1            │ 1.20.3                             │ body-parser: Denial of Service Vulnerability in body-parser  │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-45590                   │
+├────────────────┼────────────────┤          │          ├───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ braces         │ CVE-2024-4068  │          │          │ 3.0.2             │ 3.0.3                              │ braces: fails to limit the number of characters it can       │
+│                │                │          │          │                   │                                    │ handle                                                       │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-4068                    │
+├────────────────┼────────────────┼──────────┤          ├───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ cookie         │ CVE-2024-47764 │ LOW      │          │ 0.4.1             │ 0.7.0                              │ cookie: cookie accepts cookie name, path, and domain with    │
+│                │                │          │          │                   │                                    │ out of bounds...                                             │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-47764                   │
+│                │                │          │          ├───────────────────┤                                    │                                                              │
+│                │                │          │          │ 0.5.0             │                                    │                                                              │
+│                │                │          │          │                   │                                    │                                                              │
+│                │                │          │          │                   │                                    │                                                              │
+├────────────────┼────────────────┼──────────┤          ├───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ express        │ CVE-2024-29041 │ MEDIUM   │          │ 4.18.2            │ 4.19.2, 5.0.0-beta.3               │ express: cause malformed URLs to be evaluated                │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-29041                   │
+│                ├────────────────┤          │          │                   ├────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2024-43796 │          │          │                   │ 4.20.0, 5.0.0                      │ express: Improper Input Handling in Express Redirects        │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-43796                   │
+├────────────────┼────────────────┼──────────┼──────────┼───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ ip             │ CVE-2024-29415 │ HIGH     │ affected │ 2.0.0             │                                    │ node-ip: Incomplete fix for CVE-2023-42282                   │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-29415                   │
+│                ├────────────────┼──────────┼──────────┤                   ├────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2023-42282 │ LOW      │ fixed    │                   │ 2.0.1, 1.1.9                       │ nodejs-ip: arbitrary code execution via the isPublic()       │
+│                │                │          │          │                   │                                    │ function                                                     │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2023-42282                   │
+├────────────────┼────────────────┼──────────┤          ├───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ path-to-regexp │ CVE-2024-45296 │ HIGH     │          │ 0.1.7             │ 1.9.0, 0.1.10, 8.0.0, 3.3.0, 6.3.0 │ path-to-regexp: Backtracking regular expressions cause ReDoS │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-45296                   │
+├────────────────┼────────────────┼──────────┤          ├───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ send           │ CVE-2024-43799 │ MEDIUM   │          │ 0.18.0            │ 0.19.0                             │ send: Code Execution Vulnerability in Send Library           │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-43799                   │
+├────────────────┼────────────────┤          │          ├───────────────────┼────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ serve-static   │ CVE-2024-43800 │          │          │ 1.15.0            │ 1.16.0, 2.1.0                      │ serve-static: Improper Sanitization in serve-static          │
+│                │                │          │          │                   │                                    │ https://avd.aquasec.com/nvd/cve-2024-43800                   │
+└────────────────┴────────────────┴──────────┴──────────┴───────────────────┴────────────────────────────────────┴──────────────────────────────────────────────────────────────┘
+
+frontend/package-lock.json (npm)
+================================
+Total: 5 (UNKNOWN: 0, LOW: 0, MEDIUM: 3, HIGH: 2, CRITICAL: 0)
+
+┌──────────────────┬────────────────┬──────────┬────────┬───────────────────┬───────────────┬────────────────────────────────────────────────────────┐
+│     Library      │ Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                         Title                          │
+├──────────────────┼────────────────┼──────────┼────────┼───────────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ axios            │ CVE-2024-39338 │ HIGH     │ fixed  │ 1.6.1             │ 1.7.4         │ axios: axios: Server-Side Request Forgery              │
+│                  │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-39338             │
+├──────────────────┼────────────────┤          │        ├───────────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ braces           │ CVE-2024-4068  │          │        │ 3.0.2             │ 3.0.3         │ braces: fails to limit the number of characters it can │
+│                  │                │          │        │                   │               │ handle                                                 │
+│                  │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-4068              │
+├──────────────────┼────────────────┼──────────┤        ├───────────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ follow-redirects │ CVE-2023-26159 │ MEDIUM   │        │ 1.15.3            │ 1.15.4        │ follow-redirects: Improper Input Validation due to the │
+│                  │                │          │        │                   │               │ improper handling of URLs by...                        │
+│                  │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2023-26159             │
+│                  ├────────────────┤          │        │                   ├───────────────┼────────────────────────────────────────────────────────┤
+│                  │ CVE-2024-28849 │          │        │                   │ 1.15.6        │ follow-redirects: Possible credential leak             │
+│                  │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-28849             │
+├──────────────────┼────────────────┤          │        ├───────────────────┼───────────────┼────────────────────────────────────────────────────────┤
+│ micromatch       │ CVE-2024-4067  │          │        │ 4.0.5             │ 4.0.8         │ micromatch: vulnerable to Regular Expression Denial of │
+│                  │                │          │        │                   │               │ Service                                                │
+│                  │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-4067              │
+└──────────────────┴────────────────┴──────────┴────────┴───────────────────┴───────────────┴────────────────────────────────────────────────────────┘
